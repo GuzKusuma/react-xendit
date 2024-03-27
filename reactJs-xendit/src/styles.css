@@ -1,0 +1,25 @@
+.roti-image {
+  position: fixed;
+  top: 20%; /* Atur posisi vertikal ke tengah */
+  left: -8%; /* Atur posisi horizontal ke pinggiran kiri */
+  /* transform: translate(-65%, -0%); */
+  transform: rotate(35deg); /* Membuat gambar roti berada di tengah */
+  width: 200px; /* Sesuaikan ukuran gambar sesuai kebutuhan */
+  filter: blur(5px);
+  overflow-x: hidden;
+  -webkit-user-drag: none;
+  pointer-events: none; /* Memberikan efek blur pada gambar roti */
+}
+.roti-image2 {
+  position: fixed;
+  top: 40%; /* Atur posisi vertikal ke tengah */
+  left: 90%; /* Atur posisi horizontal ke pinggiran kiri */
+  /* transform: translate(-65%, -0%); */
+  transform: rotate(35deg); /* Membuat gambar roti berada di tengah */
+  width: 300px;
+  max-width: 100%; /* Sesuaikan ukuran gambar sesuai kebutuhan */
+  filter: blur(8px); /* Memberikan efek blur pada gambar roti */
+  overflow-x: hidden;
+  -webkit-user-drag: none;
+  pointer-events: none;
+}
