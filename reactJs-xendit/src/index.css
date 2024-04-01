@@ -1,5 +1,5 @@
 :root {
-  font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+  font-family: Outfit, system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;
 
   color-scheme: light;
@@ -7,6 +7,36 @@
 
 body {
   margin: 0;
-  padding-inline: 3rem;
-  max-width: 100%; /* Atur lebar maksimum konten */
+
+  max-width: 100%;
+
+  overflow-x: hidden; /* Atur lebar maksimum konten */
+} /* Lebar, warna, dan gaya scrollbar */
+::-webkit-scrollbar {
+  width: 9px;
+  height: 5px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: rgba(
+    241,
+    241,
+    241,
+    0.5
+  ); /* Warna track scrollbar dengan efek transparansi */
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: rgb(255, 186, 58);
+  border-radius: 2px; /* Membuat handle scrollbar menjadi rounded */
+  box-shadow: 0 0 6px rgba(0, 0, 0, 0.3);
+  box-shadow: inset 2px 2px 2px hsla(0, 0%, 100%, 0.25),
+    inset -2px -2px 2px rgba(0, 0, 0, 0.25); /* Menambahkan efek mengambang */
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: orange;
 }

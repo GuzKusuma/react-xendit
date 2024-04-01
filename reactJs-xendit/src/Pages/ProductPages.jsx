@@ -1,12 +1,25 @@
 import React, { useState, useEffect } from "react";
 import { Button, Flex, Skeleton } from "antd";
 import { Link } from "react-router-dom";
-import AnimatedHeading from "../components/animatedText";
+
 import "../styles.css"; // Import AnimatedHeading component
 import { motion } from "framer-motion";
+import { usePayoutLinkContext } from "../service/PayoutLink";
+import ProductSection from "../components/ProductSection";
+import { TypeAnimation } from "react-type-animation";
+import FooterSection from "../components/FooterSection";
 
 function ProductPages() {
-  const [loading, setLoading] = useState(true);
+  const [productLoading, setLoading] = useState(true);
+  const { loading, error, payoutLink, createPayout } = usePayoutLinkContext();
+
+  const handleCreatePayout = async () => {
+    try {
+      await createPayout();
+    } catch (error) {
+      console.log("gagal membuat link payout", error);
+    }
+  };
 
   // Simulasi delay loading
   useEffect(() => {
@@ -22,14 +35,16 @@ function ProductPages() {
         horizontal="true"
         justify="space-around"
         style={{
-          marginTop: "4rem",
+          paddingInline: "3rem",
+          marginTop: "8rem",
           position: "relative",
           maxWidth: "100%",
           overflow: "hidden",
+          marginBottom: "7rem",
         }}
       >
-        <Flex flex={3} justify="center">
-          {loading ? (
+        <Flex flex={3} justify="center" style={{ overflow: "hidden" }}>
+          {productLoading ? (
             <Skeleton.Image
               // Adjust the width here
               style={{ height: "250px", objectFit: "contain", width: "400px" }}
@@ -47,22 +62,39 @@ function ProductPages() {
           )}
         </Flex>
 
-        <Flex flex={2} vertical>
-          {loading ? (
+        <Flex flex={2} vertical style={{ overflow: "hidden" }}>
+          {productLoading ? (
             <>
               <Skeleton active paragraph={{ rows: 4 }} />
               <Skeleton.Button style={{ width: 160, marginTop: 16 }} active />
             </>
           ) : (
             <>
-              <AnimatedHeading>Enak, Lezat, Nikmat!</AnimatedHeading>
-              <h4 style={{ marginTop: "0", fontWeight: "normal" }}>
+              <h1 style={{ margin: "0" }}>Kami Membuat Roti </h1>
+              <TypeAnimation
+                sequence={[
+                  // Same substring at the start will only be typed out once, initially
+                  "Yang Enak",
+                  1000, // wait 1s before replacing "Mice" with "Hamsters"
+                  "Lezat",
+                  1000,
+                  "dan Bergizi",
+                  1000,
+                ]}
+                wrapper="span"
+                speed={50}
+                style={{ fontSize: "2em", display: "inline-block" }}
+                repeat={Infinity}
+              />
+              <h4 style={{ marginTop: "1rem ", fontWeight: "normal" }}>
                 Pentingnya roti dalam nutrisi kita menjadi alasan mengapa kami
                 berkomitmen untuk menyediakan produk yang segar, lezat, dan
                 selalu memanjakan lidah Anda.
               </h4>
               <Link to="/cart">
                 <Button
+                  onClick={handleCreatePayout}
+                  disabled={loading}
                   shape="round"
                   type="primary"
                   style={{
@@ -85,7 +117,7 @@ function ProductPages() {
           )}
         </Flex>
       </Flex>
-      {loading ? (
+      {productLoading ? (
         <>
           <Skeleton.Image className="roti-image" style={{ maxWidth: "100%" }} />
           <Skeleton.Image
@@ -116,6 +148,8 @@ function ProductPages() {
           />
         </>
       )}
+      <ProductSection />
+      <FooterSection />
     </>
   );
 }

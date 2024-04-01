@@ -9,11 +9,17 @@ import Navbar from "./components/navbar";
 import AboutPages from "./Pages/AboutPages";
 import CheckoutPage from "./Pages/CheckoutPage";
 import ProductPages from "./Pages/ProductPages";
+import { PayoutLinkProvider } from "./service/PayoutLink";
+import FormDetail from "./Pages/FormDetail";
+import { Scrollbar } from "react-scrollbars-custom";
+import PricingPages from "./Pages/PricingPages";
 
 function App() {
   return (
     <Router>
-      <AppContent />
+      <PayoutLinkProvider>
+        <AppContent />
+      </PayoutLinkProvider>
     </Router>
   );
 }
@@ -23,11 +29,15 @@ function AppContent() {
 
   return (
     <>
-      {location.pathname !== "/cart" && <Navbar />}
+      {location.pathname !== "/cart" &&
+        location.pathname !== "/another-path" && <Navbar />}
+
       <Routes>
         <Route path="/" element={<ProductPages />} />
         <Route path="/about" element={<AboutPages />} />
         <Route path="/cart" element={<CheckoutPage />} />
+        <Route path="/FormDetail" element={<FormDetail />} />
+        <Route path="/pricing" element={<PricingPages />} />
       </Routes>
     </>
   );
