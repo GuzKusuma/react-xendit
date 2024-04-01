@@ -43,10 +43,10 @@ export const PayoutLinkProvider = ({ children }) => {
       }
 
       const responseData = await response.json();
-      const payoutId = responseData.id; // Mengambil ID payout dari respons
-      console.log("Payout ID:", payoutId); // Menampilkan ID payout di console
+      const payoutId = responseData.id; // Ambil ID payout dari respons
+      console.log("Payout ID:", payoutId); // Tampilkan ID payout di console
 
-      // Return ID payout agar dapat diakses dari luar
+      // Kembalikan ID payout agar dapat diakses dari luar
       return payoutId;
     } catch (error) {
       setError(error.toString() || "Failed to create payout link");
@@ -76,6 +76,7 @@ export const PayoutLinkProvider = ({ children }) => {
       }
 
       const responseData = await response.json();
+      console.log("Payout URL:", responseData.payout_url); // Menampilkan payout_url di console
       return responseData;
     } catch (error) {
       console.error("Failed to fetch payout link:", error);

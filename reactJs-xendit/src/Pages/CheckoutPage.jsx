@@ -5,7 +5,7 @@ import { Link } from "react-router-dom";
 import { usePayoutLinkContext } from "../service/PayoutLink";
 
 function CheckoutPage() {
-  const { createPayout } = usePayoutLinkContext();
+  const { createPayout, getPayoutLink } = usePayoutLinkContext(); // Mengimpor getPayoutLink dari usePayoutLinkContext
   const [isLoading, setIsLoading] = useState(false);
 
   const shoppingCartItems = [
@@ -31,14 +31,22 @@ function CheckoutPage() {
         "https://www.bakingbusiness.com/ext/resources/2021/11/1112-AdobeStockBakedGoods.jpg?height=667&t=1673962026&width=1080",
     },
   ];
-
   const handleCreatePayout = async () => {
     setIsLoading(true);
     try {
       // Lakukan pembuatan pembayaran di sini
-      await createPayout();
+      const payoutId = await createPayout();
 
-      // Tampilkan pesan sukses bahwa pembayaran berhasil dibuat
+      // Mendapatkan tautan pembayaran berdasarkan payoutId
+      const payoutResponse = await getPayoutLink(payoutId);
+
+      // Mendapatkan payout_url dari respons getPayoutLink
+      const payoutUrl = payoutResponse.payout_url;
+
+      // Redirect ke payout_url
+      window.location.href = payoutUrl;
+
+      // Tampilkan pesan sukses bahwa pembayaran berhasil dibuat (opsional)
       message.success("Pembayaran berhasil dibuat.");
     } catch (error) {
       // Tangani kesalahan yang terjadi saat pembuatan pembayaran
