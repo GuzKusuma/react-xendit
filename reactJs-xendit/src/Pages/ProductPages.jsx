@@ -11,15 +11,7 @@ import FooterSection from "../components/FooterSection";
 
 function ProductPages() {
   const [productLoading, setLoading] = useState(true);
-  const { loading, error, payoutLink, createPayout } = usePayoutLinkContext();
-
-  const handleCreatePayout = async () => {
-    try {
-      await createPayout();
-    } catch (error) {
-      console.log("gagal membuat link payout", error);
-    }
-  };
+  const { loading } = usePayoutLinkContext();
 
   // Simulasi delay loading
   useEffect(() => {
@@ -93,7 +85,6 @@ function ProductPages() {
               </h4>
               <Link to="/cart">
                 <Button
-                  onClick={handleCreatePayout}
                   disabled={loading}
                   shape="round"
                   type="primary"

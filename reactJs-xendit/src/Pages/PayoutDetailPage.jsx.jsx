@@ -6,7 +6,7 @@ import { Button, Card, Flex, Spin, Tag } from "antd";
 import { ArrowLeftOutlined } from "@ant-design/icons";
 
 function PayoutDetailPage() {
-  const { getPayoutLink, getPayoutStatus } = usePayoutLinkContext(); // Mengimpor getPayoutStatus dari usePayoutLinkContext
+  const { getPayoutLink, getPayoutStatus } = usePayoutLinkContext();
   const { payoutId } = useParams();
   const [payoutData, setPayoutData] = useState(null);
   const [payoutStatus, setPayoutStatus] = useState(null);
@@ -16,12 +16,10 @@ function PayoutDetailPage() {
     const fetchPayoutData = async () => {
       setIsLoading(true);
       try {
-        // Panggil API untuk mendapatkan informasi payout berdasarkan ID
         const response = await getPayoutLink(payoutId);
         setPayoutData(response);
 
-        // Panggil API untuk mendapatkan status payout berdasarkan ID
-        const status = await getPayoutStatus(payoutId); // Gunakan getPayoutStatus yang diimpor dari konteks
+        const status = await getPayoutStatus(payoutId);
         setPayoutStatus(status);
       } catch (error) {
         console.error("Failed to fetch payout data:", error);
@@ -30,7 +28,9 @@ function PayoutDetailPage() {
       }
     };
 
-    fetchPayoutData();
+    if (payoutId) {
+      fetchPayoutData();
+    }
   }, [getPayoutLink, getPayoutStatus, payoutId]);
 
   if (isLoading) {
@@ -84,7 +84,7 @@ function PayoutDetailPage() {
             width: 300,
             height: 200,
             borderColor: tagColor,
-            boxShadow: `0 0 10px ${tagColor}  `, // Mengubah opacity agar lebih transparan dengan menambahkan angka 33 di akhir warna, yang berarti transparan 33%
+            boxShadow: `0 0 10px ${tagColor}  `,
           }}
         >
           <Meta

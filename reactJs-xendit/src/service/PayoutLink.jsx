@@ -44,9 +44,12 @@ export const PayoutLinkProvider = ({ children }) => {
       }
 
       const responseData = await response.json();
-      const newPayoutId = responseData.id;
-      console.log("Payout ID:", newPayoutId);
-      setPayoutId(newPayoutId);
+      const newPayoutId = responseData.id; // Ambil ID payout dari respons
+      console.log("Payout ID:", newPayoutId); // Tampilkan ID payout di console
+
+      setPayoutId(newPayoutId); // Simpan ID payout ke dalam state
+
+      return newPayoutId; // Kembalikan ID payout agar dapat diakses dari luar
     } catch (error) {
       setError(error.toString() || "Failed to create payout link");
     } finally {
@@ -75,6 +78,7 @@ export const PayoutLinkProvider = ({ children }) => {
       }
 
       const responseData = await response.json();
+      console.log("Payout Status:", responseData.status); // Menampilkan status di console
       return responseData.status;
     } catch (error) {
       console.error("Failed to fetch payout status:", error);
@@ -103,12 +107,34 @@ export const PayoutLinkProvider = ({ children }) => {
       }
 
       const responseData = await response.json();
+      console.log("Payout URL:", responseData.payout_url); // Menampilkan payout_url di console
       return responseData;
     } catch (error) {
       console.error("Failed to fetch payout link:", error);
       throw new Error("Failed to fetch payout link");
     }
   };
+
+  // Gunakan useEffect untuk mengambil status pembayaran saat payoutId berubah
+  useEffect(() => {
+    if (payoutId) {
+      getPayoutStatus(payoutId)
+        .then((status) => {
+          console.log("Payout Status:", status);
+        })
+        .catch((error) => {
+          console.error("Error:", error);
+        });
+
+      getPayoutLink(payoutId)
+        .then((response) => {
+          console.log("Payout URL:", response.payout_url);
+        })
+        .catch((error) => {
+          console.error("Error:", error);
+        });
+    }
+  }, [payoutId]);
 
   // Memberikan state dan fungsi ke konteks
   const contextValue = {

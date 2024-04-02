@@ -4,7 +4,6 @@ import {
   Routes,
   Route,
   useLocation,
-  useMatch,
 } from "react-router-dom";
 import Navbar from "./components/navbar";
 import AboutPages from "./Pages/AboutPages";
@@ -26,7 +25,6 @@ function App() {
 }
 
 function AppContent() {
-  const location = useLocation();
   const isNavbarVisible =
     window.location.pathname === "/" ||
     window.location.pathname === "/about" ||

@@ -6,6 +6,7 @@ import { usePayoutLinkContext } from "../service/PayoutLink";
 
 function CheckoutPage() {
   const { createPayout, getPayoutLink } = usePayoutLinkContext();
+
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
 
@@ -38,11 +39,9 @@ function CheckoutPage() {
     try {
       const payoutId = await createPayout();
       navigate(`/payout/${payoutId}`);
-      // Call getPayoutLink here
       const payoutResponse = await getPayoutLink(payoutId);
       const payoutUrl = payoutResponse.payout_url;
       window.open(payoutUrl, "_blank");
-      message.success("Pembayaran berhasil dibuat.");
     } catch (error) {
       console.error("Gagal membuat pembayaran:", error);
       message.error("Gagal membuat pembayaran.");
