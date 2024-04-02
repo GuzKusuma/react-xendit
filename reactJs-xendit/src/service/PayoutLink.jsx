@@ -1,4 +1,4 @@
-import React, { useState, createContext } from "react";
+import React, { useState, createContext, useEffect } from "react";
 
 // Membuat konteks untuk PayoutLink
 const PayoutLinkContext = createContext();
@@ -8,9 +8,10 @@ export const usePayoutLinkContext = () => React.useContext(PayoutLinkContext);
 
 // Komponen PayoutLinkProvider untuk menyediakan konteks
 export const PayoutLinkProvider = ({ children }) => {
-  // State untuk loading, error
+  // State untuk loading, error, dan payoutId
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+  const [payoutId, setPayoutId] = useState(null);
 
   // Fungsi untuk membuat pembayaran (payout)
   const createPayout = async () => {
@@ -43,15 +44,41 @@ export const PayoutLinkProvider = ({ children }) => {
       }
 
       const responseData = await response.json();
-      const payoutId = responseData.id; // Ambil ID payout dari respons
-      console.log("Payout ID:", payoutId); // Tampilkan ID payout di console
-
-      // Kembalikan ID payout agar dapat diakses dari luar
-      return payoutId;
+      const newPayoutId = responseData.id;
+      console.log("Payout ID:", newPayoutId);
+      setPayoutId(newPayoutId);
     } catch (error) {
       setError(error.toString() || "Failed to create payout link");
     } finally {
       setLoading(false);
+    }
+  };
+
+  // Fungsi untuk mendapatkan status pembayaran berdasarkan payoutId
+  const getPayoutStatus = async (payoutId) => {
+    const secretKey =
+      "xnd_development_InaGUSY8VJF4y4UfqEtT8XTZdPurbjZN2BqURhf0NVHU6k2tkHRYduTX8E9Mf8l";
+    const endpoint = `https://api.xendit.co/payouts/${payoutId}`;
+    const basicAuthHeader = `Basic ${btoa(secretKey + ":")}`;
+
+    try {
+      const response = await fetch(endpoint, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: basicAuthHeader,
+        },
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to fetch payout status");
+      }
+
+      const responseData = await response.json();
+      return responseData.status;
+    } catch (error) {
+      console.error("Failed to fetch payout status:", error);
+      throw new Error("Failed to fetch payout status");
     }
   };
 
@@ -76,7 +103,6 @@ export const PayoutLinkProvider = ({ children }) => {
       }
 
       const responseData = await response.json();
-      console.log("Payout URL:", responseData.payout_url); // Menampilkan payout_url di console
       return responseData;
     } catch (error) {
       console.error("Failed to fetch payout link:", error);
@@ -89,7 +115,9 @@ export const PayoutLinkProvider = ({ children }) => {
     loading,
     error,
     createPayout,
+    setPayoutId,
     getPayoutLink,
+    getPayoutStatus,
   };
 
   return (

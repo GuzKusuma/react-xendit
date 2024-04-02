@@ -4,15 +4,16 @@ import {
   Routes,
   Route,
   useLocation,
+  useMatch,
 } from "react-router-dom";
 import Navbar from "./components/navbar";
 import AboutPages from "./Pages/AboutPages";
 import CheckoutPage from "./Pages/CheckoutPage";
 import ProductPages from "./Pages/ProductPages";
 import { PayoutLinkProvider } from "./service/PayoutLink";
-import FormDetail from "./Pages/FormDetail";
-import { Scrollbar } from "react-scrollbars-custom";
+
 import PricingPages from "./Pages/PricingPages";
+import PayoutDetailPage from "./Pages/PayoutDetailPage.jsx";
 
 function App() {
   return (
@@ -26,18 +27,21 @@ function App() {
 
 function AppContent() {
   const location = useLocation();
+  const isNavbarVisible =
+    window.location.pathname === "/" ||
+    window.location.pathname === "/about" ||
+    window.location.pathname === "/pricing";
 
   return (
     <>
-      {location.pathname !== "/cart" &&
-        location.pathname !== "/another-path" && <Navbar />}
+      {isNavbarVisible && <Navbar />}
 
       <Routes>
         <Route path="/" element={<ProductPages />} />
         <Route path="/about" element={<AboutPages />} />
         <Route path="/cart" element={<CheckoutPage />} />
-        <Route path="/FormDetail" element={<FormDetail />} />
         <Route path="/pricing" element={<PricingPages />} />
+        <Route path="/payout/:payoutId" element={<PayoutDetailPage />} />
       </Routes>
     </>
   );

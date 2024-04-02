@@ -1,12 +1,13 @@
 import React, { useState } from "react";
 import { Button, Divider, Flex, message } from "antd";
 import { ArrowLeftOutlined } from "@ant-design/icons";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { usePayoutLinkContext } from "../service/PayoutLink";
 
 function CheckoutPage() {
-  const { createPayout, getPayoutLink } = usePayoutLinkContext(); // Mengimpor getPayoutLink dari usePayoutLinkContext
+  const { createPayout, getPayoutLink } = usePayoutLinkContext();
   const [isLoading, setIsLoading] = useState(false);
+  const navigate = useNavigate();
 
   const shoppingCartItems = [
     {
@@ -31,29 +32,21 @@ function CheckoutPage() {
         "https://www.bakingbusiness.com/ext/resources/2021/11/1112-AdobeStockBakedGoods.jpg?height=667&t=1673962026&width=1080",
     },
   ];
+
   const handleCreatePayout = async () => {
     setIsLoading(true);
     try {
-      // Lakukan pembuatan pembayaran di sini
       const payoutId = await createPayout();
-
-      // Mendapatkan tautan pembayaran berdasarkan payoutId
+      navigate(`/payout/${payoutId}`);
+      // Call getPayoutLink here
       const payoutResponse = await getPayoutLink(payoutId);
-
-      // Mendapatkan payout_url dari respons getPayoutLink
       const payoutUrl = payoutResponse.payout_url;
-
-      // Redirect ke payout_url
-      window.location.href = payoutUrl;
-
-      // Tampilkan pesan sukses bahwa pembayaran berhasil dibuat (opsional)
+      window.open(payoutUrl, "_blank");
       message.success("Pembayaran berhasil dibuat.");
     } catch (error) {
-      // Tangani kesalahan yang terjadi saat pembuatan pembayaran
       console.error("Gagal membuat pembayaran:", error);
       message.error("Gagal membuat pembayaran.");
     } finally {
-      // Tetapkan isLoading ke false setelah selesai
       setIsLoading(false);
     }
   };
@@ -65,7 +58,10 @@ function CheckoutPage() {
       <Flex align="center" gap={60}>
         <Link to="/">
           <Button
-            style={{ borderColor: "orange", transition: "transform 0.3s ease" }}
+            style={{
+              borderColor: "orange",
+              transition: "transform 0.3s ease",
+            }}
             shape="circle"
             icon={<ArrowLeftOutlined style={{ color: "orange" }} />}
             onMouseEnter={(e) => {
@@ -138,7 +134,7 @@ function CheckoutPage() {
               shape="round"
               type="primary"
               style={{
-                width: " 160px",
+                width: "160px",
                 background: "orange",
                 transition: "background-color 0.3s ease",
                 fontWeight: "bold",
