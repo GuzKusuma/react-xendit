@@ -28,6 +28,7 @@ function AppContent() {
   const isNavbarVisible =
     window.location.pathname === "/" ||
     window.location.pathname === "/about" ||
+    window.location.pathname === "/cart" ||
     window.location.pathname === "/pricing";
 
   return (

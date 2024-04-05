@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Button, Flex } from "antd";
+import { Avatar, Button, Flex } from "antd";
 import { Link, useLocation } from "react-router-dom";
 import { UserOutlined } from "@ant-design/icons";
 
@@ -79,16 +79,19 @@ function Navbar() {
             Pricing
           </Link>
         </Flex>
-        <Button
-          size="large"
-          style={{
-            backgroundColor: "orange",
-            color: "white",
-            paddingInline: "30px",
-          }}
-        >
-          Daftar
-        </Button>
+        <Flex justify="center" align="center" gap={20}>
+          <Flex>
+            <Avatar icon={<UserOutlined />} />
+          </Flex>
+          <Flex vertical>
+            <h4 style={{ margin: 0 }}>
+              Manik <br />{" "}
+            </h4>
+            <sub style={{ marginTop: -4 }}>
+              Admin <br />{" "}
+            </sub>
+          </Flex>
+        </Flex>
       </Flex>
     </>
   );
